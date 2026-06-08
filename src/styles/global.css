@@ -1,0 +1,83 @@
+/* ─── Axiom Neural · Global Design System ─────────────────────────────────── */
+
+:root {
+  --bg-base:       #07080a;
+  --bg-surface:    #0d0f12;
+  --bg-raised:     #131619;
+  --bg-overlay:    #1a1e23;
+  --bg-hover:      #1f2329;
+
+  --border-subtle:  rgba(255,255,255,0.06);
+  --border-default: rgba(255,255,255,0.10);
+  --border-strong:  rgba(255,255,255,0.18);
+
+  --text-primary:   #e8eaed;
+  --text-secondary: #8b9199;
+  --text-muted:     #4a5058;
+  --text-inverse:   #07080a;
+
+  --accent-primary:  #00e5c3;   /* electric teal */
+  --accent-dim:      rgba(0,229,195,0.12);
+  --accent-glow:     rgba(0,229,195,0.25);
+
+  --red:    #ff4d6a;
+  --amber:  #f59e0b;
+  --blue:   #3b82f6;
+  --purple: #a855f7;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.6);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.8);
+  --glow-accent: 0 0 24px rgba(0,229,195,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 14px; scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+.display { font-family: var(--font-display); }
+.mono    { font-family: var(--font-mono); }
+
+h1,h2,h3,h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ── Selection ──────────────────────────────────────────────────────────── */
+::selection { background: var(--accent-glow); color: var(--text-primary); }
+
+/* ── Focus ──────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 1.5px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
