@@ -1,48 +1,156 @@
-# AxiomNeural // High-Fidelity Electrophysiological Time-Series Data Synthesis Engine
+# Axiom Neural — Neuro-Synthetic Data Generator
 
-AxiomNeural is an open-source, performance-optimized data infrastructure framework engineered to eliminate the critical data scarcity bottleneck in neurotechnology and brain-computer interface (BCI) research. Traditional machine learning pipelines for neural decoding are severely limited by the high operational costs, ethical constraints, and strict privacy regulations (e.g., HIPAA) associated with clinical human EEG collection trials.
+> AI-powered EEG synthesis platform for neurotech researchers.  
+> Generate unlimited synthetic brainwave data from a minimal real recording.
 
-This platform bridges that gap by engineering a deterministic and stochastic signal processing engine capable of synthesizing publication-grade, privacy-preserving time-series EEG telemetry. 
-
----
-
-## 1. Core Architecture & Scientific Methodology
-
-AxiomNeural does not rely on simplistic waveform generation. It models localized cortical potentials by accounting for the complex biophysical properties of the human brain:
-
-### Stochastic Background Topologies ($1/f$ Spectral Noise)
-Authentic biological neural networks exhibit non-linear background electrical activity that follows a power-law distribution, specifically **Pink Noise** ($1/f$ spectral density). AxiomNeural implements a continuous Fast Fourier Transform (FFT) scaling vector to generate mathematically verified background noise, ensuring that downstream AI models are trained on true-to-life signal noise distributions rather than uniform white noise.
-
-### Harmonic Oscillator Matrices
-The platform simulates core neurological rhythms by isolating and superimposing primary and secondary harmonic oscillators across standard frequency bands:
-* **Delta ($\Delta$) Band:** $0.5\text{--}4\text{ Hz}$ (Deep slow-wave sleep states)
-* **Theta ($\Theta$) Band:** $4\text{--}8\text{ Hz}$ (High cognitive workload, fatigue, meditation)
-* **Alpha ($\Alpha$) Band:** $8\text{--}12\text{ Hz}$ (Relaxed, awake states with closed eyes)
-* **Beta ($\Beta$) Band:** $12\text{--}30\text{ Hz}$ (Active concentration, motor execution processing)
-
-### Transient Physiological Artifacts
-To ensure models are robust enough to handle real-world deployment, the engine introduces transient physiological distortions, such as **Ocular (Eye-Blink) Artifacts**, modeled via asymmetrical Gaussian distribution kernels.
+![Axiom Neural](https://img.shields.io/badge/version-1.0.0-00e5c3?style=flat-square&labelColor=0d0f12)
+![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&labelColor=0d0f12)
+![License](https://img.shields.io/badge/license-MIT-a855f7?style=flat-square&labelColor=0d0f12)
 
 ---
 
-## 2. System Architecture Layout
+## What it does
 
-The framework decouples high-performance mathematical synthesis from data ingestion layers to maintain ultra-low latency profiles:
+Axiom Neural solves the **data scarcity bottleneck** in neurotech R&D.  
+Feed it 20 minutes of real EEG — get 100 hours of validated synthetic data back.
 
-[ Research User / UI Client ]
+| Pillar | What it does |
+|--------|-------------|
+| **Signal Ingestor** | Connects to PhysioNet, TUH, Sleep-EDF corpora. Runs ICA + bandpass denoising. |
+| **Generative Engine** | 1D Diffusion Model / TimeGAN over multi-channel voltage time-series. Spatial coherence via cross-attention. |
+| **Validation Guardrail** | PSD matching, Wasserstein distance, TSTR benchmark. Auto-generates side-by-side validation report. |
+| **Developer Interface** | Streamlit-style React dashboard. Export to `.csv`, `.edf`, `.json`. REST-API ready. |
+
+---
+
+## Quick start
+
+```bash
+# 1. Clone
+git clone https://github.com/YOUR_USERNAME/axiom-neural.git
+cd axiom-neural
+
+# 2. Install
+npm install
+
+# 3. Run dev server
+npm run dev
+# → http://localhost:5173
+
+# 4. Build for production
+npm run build
+```
+
+**Node ≥ 18 required.**
+
+---
+
+## Project structure
+
+```
+axiom-neural/
+├── index.html
+├── vite.config.js
+├── package.json
+├── README.md
 │
-▼ (HTTP POST / JSON Schema)
-┌────────────────────────────────────────────────────────┐
-│ FastAPI Gateway Layer (Data Input Validation)          │
-└────────────────────────────┬───────────────────────────┘
-│
-▼ (Internal Core Routing)
-┌────────────────────────────────────────────────────────┐
-│ AxiomSignalEngine (Signal Synthesis Pipeline)          │
-│  ├─ Pink Noise Vector Mapping                          │
-│  ├─ Harmonic Oscillation Matrices                      │
-│  └─ Ocular Artifact Injection                         │
-└────────────────────────────┬───────────────────────────┘
-│
-▼ (High-Fidelity Matrix)
-[ Clean RESTful JSON Response Data Array (.EDF/.CSV ready) ]
+└── src/
+    ├── main.jsx                  # Entry point
+    ├── App.jsx                   # Root layout + routing
+    │
+    ├── styles/
+    │   └── global.css            # Design tokens, typography, scrollbar
+    │
+    ├── components/
+    │   ├── Sidebar.jsx           # Icon nav rail
+    │   ├── Header.jsx            # Top bar + status pill
+    │   ├── WaveformChart.jsx     # Multi-channel EEG line chart
+    │   └── PSDChart.jsx          # Power Spectral Density area chart
+    │
+    ├── pages/
+    │   ├── GeneratePage.jsx      # Brain-state config + generation UI
+    │   ├── ValidatePage.jsx      # PSD, radar, band-power, metrics
+    │   ├── DatasetsPage.jsx      # Open-source EEG corpus registry
+    │   └── ExportPage.jsx        # .csv / .edf / .json download
+    │
+    └── utils/
+        └── signalEngine.js       # All signal math: generation, PSD, validation, export
+```
+
+---
+
+## Brain states supported
+
+| State | Dominant bands | Tag |
+|-------|---------------|-----|
+| Deep Sleep | δ (0.5–4 Hz) | NREM III |
+| REM Sleep | θ/α | REM |
+| Relaxed Awake | α (8–13 Hz) | α-dominant |
+| High Focus | β/γ | β-dominant |
+| Motor Imagery — Left | β desync | Motor |
+| Motor Imagery — Right | μ suppression | Motor |
+| Epileptic Seizure | spike-wave | Clinical |
+| Meditation | θ/α blend | θ/α blend |
+
+---
+
+## EDF export
+
+The app exports a `.txt` README with an exact MNE-Python command:
+
+```python
+import mne, pandas as pd
+
+df = pd.read_csv('axiom_export.csv')
+info = mne.create_info(
+    ch_names=[c for c in df.columns if c != 'time_s'],
+    sfreq=256,
+    ch_types='eeg'
+)
+raw = mne.io.RawArray(df.drop('time_s', axis=1).values.T * 1e-6, info)
+raw.export('axiom_export.edf', fmt='edf')
+```
+
+For native `.edf` binary generation, install `pyEDFlib`:
+
+```bash
+pip install pyEDFlib mne pandas numpy
+```
+
+---
+
+## Datasets
+
+| Dataset | Subjects | Channels | License |
+|---------|----------|----------|---------|
+| [PhysioNet EEGMMIDB](https://physionet.org/content/eegmmidb/) | 109 | 64 | CC-BY |
+| [TUH EEG Corpus](https://isip.piconepress.com/projects/tuh_eeg/) | 14,987 | 22 | DUA |
+| [Sleep-EDF Expanded](https://physionet.org/content/sleep-edfx/) | 197 | 2 | CC-BY |
+| [BCI Competition IV 2a](https://www.bbci.de/competition/iv/) | 9 | 22 | Open |
+
+---
+
+## Roadmap
+
+- [ ] Real model weights (TimeGAN / 1D-DDPM) via ONNX runtime in browser
+- [ ] User-uploaded seed recording (`.edf` or `.csv` → fine-tune conditioner)
+- [ ] Inter-channel coherence analysis
+- [ ] REST API server (FastAPI backend)
+- [ ] HIPAA-compliant cloud export
+- [ ] Native `.edf` binary writer (pyEDFlib integration)
+
+---
+
+## Tech stack
+
+- **React 18** + Vite
+- **Recharts** — waveform and PSD visualisation
+- **Lucide React** — iconography
+- **DM Mono / Syne / DM Sans** — typography
+- No other dependencies
+
+---
+
+## License
+
+MIT © Axiom Neural
