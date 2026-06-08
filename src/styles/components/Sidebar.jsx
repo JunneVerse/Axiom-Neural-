@@ -2,10 +2,10 @@ import React from 'react'
 import { Activity, Cpu, BarChart2, Download, Database, Settings, HelpCircle } from 'lucide-react'
 
 const NAV = [
-  { id: 'generate',  icon: Activity,  label: 'Generate' },
-  { id: 'validate',  icon: BarChart2, label: 'Validate' },
-  { id: 'datasets',  icon: Database,  label: 'Datasets' },
-  { id: 'export',    icon: Download,  label: 'Export' },
+  { id: 'generate', icon: Activity,  label: 'Generate' },
+  { id: 'validate', icon: BarChart2, label: 'Validate' },
+  { id: 'datasets', icon: Database,  label: 'Datasets' },
+  { id: 'export',   icon: Download,  label: 'Export' },
 ]
 
 const styles = {
