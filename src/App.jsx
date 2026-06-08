@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // Layout Foundations
-import Sidebar from './components/Sidebar.jsx'
+import Sidebar from './components/sidebar.jsx'
 import Header from './components/Header.jsx'
 
 // Application Context Views
